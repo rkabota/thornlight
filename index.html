@@ -541,6 +541,8 @@
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.5);
   transition: opacity 0.15s, translate 0.15s var(--tl-ease);
 }
+.tl-tooltip:not([data-open]) { display: none; }
+.thornlight [hidden] { display: none !important; }
 .tl-tooltip[data-starting-style],
 .tl-tooltip[data-ending-style] {
   opacity: 0;
@@ -650,6 +652,9 @@
 
 @container thornlight (max-width: 380px) {
   .tl-optional-time { display: none; }
+  .tl-controls { padding: 8px; }
+  .tl-reliquary { padding: 2px 6px 2px; gap: 0; }
+  .tl-vine { height: 24px; margin-inline: 8px; }
   .thornlight { --tl-btn: 44px; }
   .tl-bar { gap: 0; }
   .tl-time { padding-inline: 2px; }
@@ -881,6 +886,9 @@ kbd {
   .stage { transition: none; }
 }
 
+/* Night test: darken only the picture, never the controls */
+.thornlight[data-light="night"] .tl-vignette { background: rgb(4 2 3 / 0.84); }
+
 </style>
   </head>
   <body>
@@ -978,7 +986,7 @@ kbd {
               <media-controls-content class="tl-controls">
                 <div class="tl-title" aria-hidden="true">
                   <span class="tl-title-mark">❦</span>
-                  <span class="tl-title-text">Big Buck Bunny</span>
+                  <span class="tl-title-text">Mux demo reel</span>
                 </div>
 
                 <media-play-button class="tl-big-play">
@@ -1008,17 +1016,17 @@ kbd {
                         <svg class="tl-icon show-playing" aria-hidden="true"><use href="#tl-pause" /></svg>
                         <svg class="tl-icon show-ended" aria-hidden="true"><use href="#tl-replay" /></svg>
                       </media-play-button>
-                      <media-tooltip id="tl-tip-play" class="tl-tooltip" side="top"></media-tooltip>
+                      <media-tooltip id="tl-tip-play" class="tl-tooltip" side="top"><media-tooltip-label></media-tooltip-label></media-tooltip>
 
                       <media-seek-button class="tl-btn tl-seek tl-optional" seconds="-10" commandfor="tl-tip-back">
                         <svg class="tl-icon" aria-hidden="true"><use href="#tl-back" /></svg>
                       </media-seek-button>
-                      <media-tooltip id="tl-tip-back" class="tl-tooltip" side="top"></media-tooltip>
+                      <media-tooltip id="tl-tip-back" class="tl-tooltip" side="top"><media-tooltip-label></media-tooltip-label></media-tooltip>
 
                       <media-seek-button class="tl-btn tl-seek tl-optional" seconds="10" commandfor="tl-tip-fwd">
                         <svg class="tl-icon" aria-hidden="true"><use href="#tl-fwd" /></svg>
                       </media-seek-button>
-                      <media-tooltip id="tl-tip-fwd" class="tl-tooltip" side="top"></media-tooltip>
+                      <media-tooltip id="tl-tip-fwd" class="tl-tooltip" side="top"><media-tooltip-label></media-tooltip-label></media-tooltip>
 
                       <div class="tl-volume">
                         <media-mute-button class="tl-btn tl-mute" commandfor="tl-tip-mute">
@@ -1026,7 +1034,7 @@ kbd {
                           <svg class="tl-icon show-vol-low" aria-hidden="true"><use href="#tl-vol-low" /></svg>
                           <svg class="tl-icon show-vol-high" aria-hidden="true"><use href="#tl-vol-high" /></svg>
                         </media-mute-button>
-                        <media-tooltip id="tl-tip-mute" class="tl-tooltip" side="top"></media-tooltip>
+                        <media-tooltip id="tl-tip-mute" class="tl-tooltip" side="top"><media-tooltip-label></media-tooltip-label></media-tooltip>
                         <media-volume-slider class="tl-stem">
                           <media-slider-track class="tl-stem-track">
                             <media-slider-fill class="tl-stem-fill"></media-slider-fill>
@@ -1044,23 +1052,23 @@ kbd {
                       <span class="tl-spacer"></span>
 
                       <media-playback-rate-button class="tl-btn tl-rate tl-optional" commandfor="tl-tip-rate"></media-playback-rate-button>
-                      <media-tooltip id="tl-tip-rate" class="tl-tooltip" side="top"></media-tooltip>
+                      <media-tooltip id="tl-tip-rate" class="tl-tooltip" side="top"><media-tooltip-label></media-tooltip-label></media-tooltip>
 
                       <media-captions-button class="tl-btn tl-cc" commandfor="tl-tip-cc">
                         <svg class="tl-icon" aria-hidden="true"><use href="#tl-cc" /></svg>
                       </media-captions-button>
-                      <media-tooltip id="tl-tip-cc" class="tl-tooltip" side="top"></media-tooltip>
+                      <media-tooltip id="tl-tip-cc" class="tl-tooltip" side="top"><media-tooltip-label></media-tooltip-label></media-tooltip>
 
                       <media-pip-button class="tl-btn tl-pip tl-optional" commandfor="tl-tip-pip">
                         <svg class="tl-icon" aria-hidden="true"><use href="#tl-pip" /></svg>
                       </media-pip-button>
-                      <media-tooltip id="tl-tip-pip" class="tl-tooltip" side="top"></media-tooltip>
+                      <media-tooltip id="tl-tip-pip" class="tl-tooltip" side="top"><media-tooltip-label></media-tooltip-label></media-tooltip>
 
                       <media-fullscreen-button class="tl-btn tl-fs" commandfor="tl-tip-fs">
                         <svg class="tl-icon show-fs-enter" aria-hidden="true"><use href="#tl-fs-enter" /></svg>
                         <svg class="tl-icon show-fs-exit" aria-hidden="true"><use href="#tl-fs-exit" /></svg>
                       </media-fullscreen-button>
-                      <media-tooltip id="tl-tip-fs" class="tl-tooltip" side="top" align="end"></media-tooltip>
+                      <media-tooltip id="tl-tip-fs" class="tl-tooltip" side="top" align="end"><media-tooltip-label></media-tooltip-label></media-tooltip>
                     </media-controls-group>
                   </media-tooltip-group>
                 </div>
@@ -1100,10 +1108,10 @@ kbd {
       </section>
 
       <section class="bench" aria-label="Try the skin">
-        <div class="bench-group" role="group" aria-label="Footage">
-          <span class="bench-label">Footage</span>
-          <button type="button" class="chip" data-source="BV3YZtogl89mg9VcNBhhnHm02Y34zI1nlMuMQfAbl3dM" data-title="Big Buck Bunny" aria-pressed="true">Bright</button>
-          <button type="button" class="chip" data-source="v69RSHhFelSm4701snP22dYz2jICy4E4FUyk02rW4gxRM" data-title="Night reel" aria-pressed="false">Dark</button>
+        <div class="bench-group" role="group" aria-label="Footage brightness">
+          <span class="bench-label">Light</span>
+          <button type="button" class="chip" data-light="day" aria-pressed="true">Day</button>
+          <button type="button" class="chip" data-light="night" aria-pressed="false">Night</button>
         </div>
         <div class="bench-group" role="group" aria-label="Player size">
           <span class="bench-label">Size</span>
@@ -1188,23 +1196,8 @@ import 'https://cdn.jsdelivr.net/npm/@videojs/cdn@10.4.0/ui/dialog-description.j
 import 'https://cdn.jsdelivr.net/npm/@videojs/cdn@10.4.0/ui/dialog-close.js';
 import 'https://cdn.jsdelivr.net/npm/@videojs/cdn@10.4.0/ui/tooltip.js';
 import 'https://cdn.jsdelivr.net/npm/@videojs/cdn@10.4.0/ui/tooltip-group.js';
+import 'https://cdn.jsdelivr.net/npm/@videojs/cdn@10.4.0/ui/tooltip-label.js';
 
-
-// Demo page: swap between a bright and a dark film so judges can check contrast.
-const media = document.querySelector('#thornlight-media');
-const title = document.querySelector('.tl-title-text');
-document.querySelectorAll('[data-source]').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const id = btn.dataset.source;
-    const src = `https://stream.mux.com/${id}.m3u8`;
-    if (!media || media.getAttribute('src') === src) return;
-    media.setAttribute('src', src);
-    if (title) title.textContent = btn.dataset.title;
-    document.querySelectorAll('[data-source]').forEach((b) =>
-      b.setAttribute('aria-pressed', String(b === btn)),
-    );
-  });
-});
 
 // Demo page: resize the stage to phone width to check the responsive layout.
 const stage = document.querySelector('.stage');
@@ -1212,6 +1205,17 @@ document.querySelectorAll('[data-size]').forEach((btn) => {
   btn.addEventListener('click', () => {
     stage.dataset.size = btn.dataset.size;
     document.querySelectorAll('[data-size]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b === btn)),
+    );
+  });
+});
+
+// Demo page: dim the picture to check the controls over dark frames.
+const player = document.querySelector('.thornlight');
+document.querySelectorAll('[data-light]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    player.dataset.light = btn.dataset.light;
+    document.querySelectorAll('[data-light]').forEach((b) =>
       b.setAttribute('aria-pressed', String(b === btn)),
     );
   });
